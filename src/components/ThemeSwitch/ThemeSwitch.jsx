@@ -1,5 +1,3 @@
-// import PropTypes from 'prop-types';
-
 import React from "react";
 import Switch from "react-switch";
 import { useMediaQuery } from "react-responsive";
@@ -46,10 +44,5 @@ function ThemeSwitch({ theme, toggleThemeHandler }) {
     </>
   );
 }
-
-// ThemeSwitch.defaultProps = { };
-
-// ThemeSwitch.propTypes = {
-// };
 
 export default ThemeSwitch;
