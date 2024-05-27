@@ -1,12 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
 import ItemRow from "../../components/ItemRow";
 
 import data from "../../../data/data.json";
 import { getStartMenuProps } from "../../helpers/dataFormatters";
-// TODO rename or move style file
-import styles from "./General.module.css";
+
+import styles from "../../styles/General.module.css";
 
 function StartMenu() {
   const navigate = useNavigate();

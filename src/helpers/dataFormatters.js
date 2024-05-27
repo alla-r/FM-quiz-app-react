@@ -33,4 +33,28 @@ const getStartMenuProps = (data) => {
   return result;
 };
 
-export { getStartMenuProps };
+const getQuestionDetailsProps = (data, quiz, questionNumber) => {
+  let result = {
+    notFound: true,
+  };
+
+  if (data && data.quizzes && data.quizzes.length > 0) {
+    const quizBlock = data.quizzes.find((el) => el.title === quiz);
+    const questions = quizBlock.questions;
+    const questionDetails = questions[questionNumber - 1];
+
+    questionDetails.iconConfig = getIconConfig(quiz, quizBlock.icon);
+    questionDetails.quizName = quiz;
+
+    if (questionDetails) {
+      questionDetails.currentQuestion = questionNumber;
+      questionDetails.amountOfQuestions = questions.length;
+    }
+
+    result = questionDetails;
+  }
+
+  return result;
+};
+
+export { getStartMenuProps, getQuestionDetailsProps };
