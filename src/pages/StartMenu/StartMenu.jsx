@@ -1,5 +1,5 @@
 import React from "react";
-// import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import ItemRow from "../../components/ItemRow";
 
@@ -9,16 +9,12 @@ import { getStartMenuProps } from "../../helpers/dataFormatters";
 import styles from "./General.module.css";
 
 function StartMenu() {
-  // TODO navigation
-  // const router = useRouter();
+  const navigate = useNavigate();
   const startMenuConfig = getStartMenuProps(data);
 
   const items = startMenuConfig.map(({ id, text, imgSrc, iconBG, iconConfig }) => {
     const onQuizSelected = (id) => {
-      // router.push({
-      //   pathname: "questions/[quiz]/[id]",
-      //   query: { id: 1, quiz: id },
-      // });
+      navigate(`question/${id}/1`);
     };
 
     return (
@@ -33,9 +29,8 @@ function StartMenu() {
   });
 
   return (
-    <div className={styles.background}>
-      <Header />
-      <main className={styles.main}>
+    <>
+      <section className={styles.main}>
         <div className={styles["content-wrapper"]}>
           <div className={styles.column}>
             <h1 className="heading-L">
@@ -47,8 +42,8 @@ function StartMenu() {
 
           <ul>{items}</ul>
         </div>
-      </main>
-    </div>
+      </section>
+    </>
   );
 }
 
