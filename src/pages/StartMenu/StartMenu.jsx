@@ -1,18 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ItemRow from "../../components/ItemRow";
-
 import data from "../../../data/data.json";
 import { getStartMenuProps } from "../../helpers/dataFormatters";
+import { useQuizContext } from "../../context/quiz-context";
 
 import styles from "../../styles/General.module.css";
 
 function StartMenu() {
+  const { setIconConfig, setTitle } = useQuizContext();
   const navigate = useNavigate();
   const startMenuConfig = getStartMenuProps(data);
 
   const items = startMenuConfig.map(({ id, text, imgSrc, iconBG, iconConfig }) => {
     const onQuizSelected = (id) => {
+      setIconConfig(iconConfig);
+      setTitle(text);
       navigate(`question/${id}/1`);
     };
 

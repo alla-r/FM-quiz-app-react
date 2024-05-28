@@ -7,10 +7,13 @@ import LightMoonIcon from "/assets/images/icon-moon-light.svg";
 import DarkMoonIcon from "/assets/images/icon-moon-dark.svg";
 import Icon from "../Icon";
 import ThemeSwitch from "../ThemeSwitch";
+import { useQuizContext } from "../../context/quiz-context";
+
 import styles from "./header.module.css";
 
-function Header({ title, iconConfig }) {
+function Header() {
   const [theme, setTheme] = useState("");
+  const { iconConfig, title } = useQuizContext();
 
   const toggleTheme = () => {
     setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
