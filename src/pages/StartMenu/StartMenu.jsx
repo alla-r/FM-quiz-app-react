@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ItemRow from "../../components/ItemRow";
 import data from "../../../data/data.json";
@@ -8,9 +8,13 @@ import { useQuizContext } from "../../context/quiz-context";
 import styles from "../../styles/General.module.css";
 
 function StartMenu() {
-  const { setIconConfig, setTitle } = useQuizContext();
+  const { setIconConfig, setTitle, resetQuizData } = useQuizContext();
   const navigate = useNavigate();
   const startMenuConfig = getStartMenuProps(data);
+
+  useEffect(() => {
+    resetQuizData();
+  }, []);
 
   const items = startMenuConfig.map(({ id, text, imgSrc, iconBG, iconConfig }) => {
     const onQuizSelected = (id) => {

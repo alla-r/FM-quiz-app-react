@@ -7,7 +7,7 @@
   margin-top: 12px;
   margin-bottom: 12px;
   background-color: var(--button-bg-color);
-  color: var(--Pure-White);
+  color: var(--Pure-White) !important;
   line-height: 100%;
   border-radius: 0.75rem;
 }
