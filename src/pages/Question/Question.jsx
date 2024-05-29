@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import ItemRow from "../../components/ItemRow";
 import CustomButton from "../../components/Button";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -8,33 +8,80 @@ import {
   ADDITIONAL_ICON_SRC,
   BUTTON_SUBMIT_ANSWER,
   BUTTON_NEXT_QUESTION,
+  BUTTON_SEE_RESULT,
+  STATUS,
 } from "../../constants";
 import data from "../../../data/data.json";
 import { getQuestionDetailsProps } from "../../helpers/dataFormatters";
+import { useQuizContext } from "../../context/quiz-context";
 
 import generalStyles from "../../styles/General.module.css";
 
 function Question() {
-  const [questionNumber, setQuestionNumber] = useState(1);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isErrorVisible, setIsErrorVisible] = useState(null);
+  const { quizInfo, setQuizInfo } = useQuizContext();
+  const { answers } = quizInfo;
 
   const params = useParams();
-  const questionDetails = getQuestionDetailsProps(data, params.quiz, questionNumber);
+  const navigate = useNavigate();
 
-  console.log(params);
-  console.log(data);
-  console.log(questionDetails);
+  const questionDetails = getQuestionDetailsProps(data, params.quiz, params.id);
 
-  const { options, currentQuestion, question, answer, amountOfQuestions, iconConfig } =
-    questionDetails;
+  const { options, currentQuestion, question, answer, amountOfQuestions } = questionDetails;
 
-  // TODO: replace hard code with state handling logic
-  // Status: selected, error, success
-  const status = "error";
-  const isSubmitted = true;
+  useEffect(() => {
+    if (isSubmitted) {
+      setQuizInfo((currentQuizInfo) => {
+        // TODO refactor => move data logic out of component
+        let newAnswers = [];
+        const answerConfig = {
+          isCorrect: selectedOption === answer,
+          userAnswer: selectedOption,
+          correctAnswer: answer,
+        };
+
+        if (!currentQuizInfo.answers[index]) {
+          newAnswers = [...currentQuizInfo.answers.slice(0, index), answerConfig];
+        } else {
+          newAnswers = currentQuizInfo.answers.map((el, i) => (i === index ? answerConfig : el));
+        }
+
+        return {
+          ...currentQuizInfo,
+          questionAmount: amountOfQuestions,
+          answers: newAnswers,
+        };
+      });
+    }
+  }, [isSubmitted]);
+
+  const questionNumber = Number(params.id);
+  const index = params.id - 1;
+
+  const getStatus = (contextInfo, option) => {
+    if (!contextInfo && selectedOption === option) {
+      return selectedOption ? STATUS.selected : "";
+    }
+
+    if (contextInfo && contextInfo.isCorrect && contextInfo.userAnswer === option) {
+      return STATUS.success;
+    }
+
+    if (contextInfo && contextInfo.isCorrect === false && contextInfo.userAnswer === option) {
+      return STATUS.error;
+    }
+
+    if (contextInfo && contextInfo.isCorrect === false && contextInfo.correctAnswer === option) {
+      return STATUS.correctTick;
+    }
+  };
 
   const items = options.map((option, i) => {
     const optionCharacter = OPTION_LETTERS[i];
+    const status = getStatus(answers[index], option);
+
     const iconConfig = {
       color: "grey",
       content: { type: "text", value: optionCharacter },
@@ -42,16 +89,21 @@ function Question() {
       status: status,
     };
 
-    const additionalIconConfig = {
-      content: {
-        type: "icon",
-        value: ADDITIONAL_ICON_SRC[status],
-      },
-      altText: `${status} icon`,
-    };
+    let additionalIconConfig = null;
 
-    const onOptionSelected = (selectedOption) => {
-      console.log(selectedOption);
+    if (status === STATUS.error || status === STATUS.success || status === STATUS.correctTick) {
+      additionalIconConfig = {
+        content: {
+          type: "icon",
+          value: ADDITIONAL_ICON_SRC[status],
+        },
+        altText: `${status} icon`,
+      };
+    }
+
+    const onOptionSelected = (option) => {
+      setIsErrorVisible(false);
+      setSelectedOption(option);
     };
 
     return (
@@ -59,7 +111,7 @@ function Question() {
         key={option}
         content={option}
         onRowClick={() => onOptionSelected(option)}
-        additionalIconConfig={isSubmitted && additionalIconConfig}
+        additionalIconConfig={additionalIconConfig}
         iconConfig={iconConfig}
         status={status}
       />
@@ -67,13 +119,25 @@ function Question() {
   });
 
   const onSubmitAnswer = () => {
-    setIsErrorVisible(true);
+    if (!selectedOption) {
+      setIsErrorVisible(true);
+      return;
+    }
+
+    if (questionNumber === amountOfQuestions && isSubmitted) {
+      navigate(`/question/${params.quiz}/result`);
+    }
+
+    if (questionNumber !== amountOfQuestions && isSubmitted) {
+      navigate(`/question/${params.quiz}/${questionNumber + 1}`);
+    }
+
+    setIsSubmitted((curr) => !curr);
   };
 
   return (
     <>
       <div className={generalStyles.background}>
-        {/* <Header title={questionDetails.quizName} iconConfig={iconConfig} /> */}
         <main className={generalStyles.main}>
           <div className={generalStyles["content-wrapper"]}>
             <div className={generalStyles.column}>
@@ -82,7 +146,16 @@ function Question() {
             </div>
             <div>
               <ul>{items}</ul>
-              <CustomButton onButtonClick={onSubmitAnswer} text={BUTTON_SUBMIT_ANSWER} />
+              <CustomButton
+                onButtonClick={onSubmitAnswer}
+                text={
+                  !isSubmitted
+                    ? BUTTON_SUBMIT_ANSWER
+                    : questionNumber !== amountOfQuestions
+                      ? BUTTON_NEXT_QUESTION
+                      : BUTTON_SEE_RESULT
+                }
+              />
               {isErrorVisible && <ErrorMessage />}
             </div>
           </div>

@@ -4,22 +4,21 @@ import { QUIZ_COMPLETED, YOU_SCORED, PLAY_AGAIN } from "../../constants";
 
 import generalStyles from "../../styles/General.module.css";
 import styles from "./Result.module.css";
-import Icon from "../../components/Icon";
 import IconTitle from "../../components/Header/components/IconTitle";
 import { useQuizContext } from "../../context/quiz-context";
 
 function Result() {
   const navigate = useNavigate();
+  const { quizInfo } = useQuizContext();
 
-  // TODO: add logic
-  const questionAmount = 10;
-  const score = 8;
+  const questionAmount = quizInfo.questionAmount;
+  const score = quizInfo.answers.reduce((acc, curr) => {
+    return curr.isCorrect ? ++acc : acc;
+  }, 0);
 
   const onPlayAgainHandler = () => {
     navigate("/");
   };
-
-  // TODO add iconConfig
 
   return (
     <div className={generalStyles.background}>

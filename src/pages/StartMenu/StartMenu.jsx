@@ -20,7 +20,7 @@ function StartMenu() {
     const onQuizSelected = (id) => {
       setIconConfig(iconConfig);
       setTitle(text);
-      navigate(`question/${id}/1`);
+      navigate(`/question/${id}/1`);
     };
 
     return (

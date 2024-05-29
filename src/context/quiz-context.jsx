@@ -6,8 +6,8 @@ const INITIAL_STATE = {
   iconConfig: {},
   setIconConfig: () => {},
   quizInfo: {
-    isSubmitted: false,
     answers: [],
+    questionAmount: 0,
   },
   resetQuizData: () => {},
 };

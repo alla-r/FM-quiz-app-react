@@ -5,6 +5,7 @@ export const ERROR_TEXT = "Please select an answer";
 export const OPTION_LETTERS = ["A", "B", "C", "D"];
 export const BUTTON_SUBMIT_ANSWER = "Submit Answer";
 export const BUTTON_NEXT_QUESTION = "Next Question";
+export const BUTTON_SEE_RESULT = "See Result";
 export const QUIZ_COMPLETED = "Quiz completed";
 export const YOU_SCORED = "You scored...";
 export const PLAY_AGAIN = "Play Again";
@@ -12,4 +13,12 @@ export const PLAY_AGAIN = "Play Again";
 export const ADDITIONAL_ICON_SRC = {
   success: successIcon,
   error: errorIcon,
+  correctTick: successIcon,
+};
+
+export const STATUS = {
+  selected: "selected",
+  error: "error",
+  success: "success",
+  correctTick: "correctTick",
 };
