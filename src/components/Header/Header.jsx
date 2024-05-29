@@ -5,15 +5,13 @@ import LightSunIcon from "/assets/images/icon-sun-light.svg";
 import DarkSunIcon from "/assets/images/icon-sun-dark.svg";
 import LightMoonIcon from "/assets/images/icon-moon-light.svg";
 import DarkMoonIcon from "/assets/images/icon-moon-dark.svg";
-import Icon from "../Icon";
+import IconTitle from "./components/IconTitle";
 import ThemeSwitch from "../ThemeSwitch";
-import { useQuizContext } from "../../context/quiz-context";
 
 import styles from "./header.module.css";
 
 function Header() {
   const [theme, setTheme] = useState("");
-  const { iconConfig, title } = useQuizContext();
 
   const toggleTheme = () => {
     setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
@@ -38,12 +36,7 @@ function Header() {
   return (
     <>
       <header className={styles.header}>
-        {title && (
-          <div className={styles.title}>
-            {iconConfig && <Icon {...iconConfig} />}
-            <h1 className="heading-S">{title}</h1>
-          </div>
-        )}
+        <IconTitle />
 
         <div className={styles.toggle}>
           <img

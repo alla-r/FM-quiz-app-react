@@ -4,6 +4,9 @@ import { QUIZ_COMPLETED, YOU_SCORED, PLAY_AGAIN } from "../../constants";
 
 import generalStyles from "../../styles/General.module.css";
 import styles from "./Result.module.css";
+import Icon from "../../components/Icon";
+import IconTitle from "../../components/Header/components/IconTitle";
+import { useQuizContext } from "../../context/quiz-context";
 
 function Result() {
   const navigate = useNavigate();
@@ -11,6 +14,10 @@ function Result() {
   // TODO: add logic
   const questionAmount = 10;
   const score = 8;
+
+  const onPlayAgainHandler = () => {
+    navigate("/");
+  };
 
   // TODO add iconConfig
 
@@ -24,10 +31,14 @@ function Result() {
           </div>
           <div>
             <div className={styles["result-wrapper"]}>
+              <div className={styles.iconTitleWrapper}>
+                <IconTitle />
+              </div>
+
               <div className={styles.score}>{score}</div>
               <div className={styles["score-description"]}>out of {questionAmount}</div>
             </div>
-            <CustomButton onButtonClick={() => navigate("/")} text={PLAY_AGAIN} />
+            <CustomButton onButtonClick={onPlayAgainHandler} text={PLAY_AGAIN} />
           </div>
         </div>
       </div>
