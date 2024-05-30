@@ -1,4 +1,17 @@
 .background {
   background: var(--main-bg-color);
   min-height: 100vh;
+  padding: 0px 24px;
+}
+
+@media only screen and (min-width: 37.5em) {
+  .background {
+    padding: 40px 64px;
+  }
+}
+
+@media only screen and (min-width: 70em) {
+  .background {
+    padding: 83px 140px 83px 143px;
+  }
 }

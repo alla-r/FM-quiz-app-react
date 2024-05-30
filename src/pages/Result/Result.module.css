@@ -9,17 +9,26 @@
 .result-wrapper {
   margin-top: 40px;
   padding: 2rem;
-  background-color: var(--Pure-White);
+  background-color: var(--item-bg-color);
   border-radius: 0.75rem;
   text-align: center;
   font-family: var(--font-rubik);
 }
 
+.iconTitleWrapper {
+  height: 2.5rem;
+}
+
 .score {
+  margin-top: 16px;
   font-weight: 500;
   font-size: 5.5rem;
   line-height: 100%;
   color: var(--Dark-Navy, #313e51);
+}
+
+[data-theme="dark"] .score {
+  color: var(--Pure-White, #ffffff);
 }
 
 .score-description {
@@ -30,13 +39,22 @@
   color: var(--Grey-Navy, #626c7f);
 }
 
+[data-theme="dark"] .score-description {
+  color: var(--Light-Bluish, #abc1e1);
+}
+
 @media only screen and (min-width: 37.5em) {
   .result-wrapper {
     padding: 3rem;
     border-radius: 1.5rem;
   }
 
+  .iconTitleWrapper {
+    height: 3.5rem;
+  }
+
   .score {
+    margin-top: 40px;
     font-size: 9rem;
   }
 

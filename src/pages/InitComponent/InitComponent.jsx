@@ -3,6 +3,7 @@ import StartMenu from "../StartMenu";
 import Question from "../Question";
 import Result from "../Result";
 import Layout from "../Layout";
+import { QuizContextWrapper } from "../../context/quiz-context";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
 ]);
 
 function InitComponent() {
-  return <RouterProvider router={router} />;
+  return (
+    <QuizContextWrapper>
+      <RouterProvider router={router} />
+    </QuizContextWrapper>
+  );
 }
 
 export default InitComponent;

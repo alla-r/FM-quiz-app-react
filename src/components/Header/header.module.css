@@ -1,5 +1,4 @@
 .header {
-  padding: 16px 24px;
   height: 72px;
   display: flex;
   justify-content: flex-end;
@@ -12,11 +11,19 @@
 }
 
 .title {
+  height: 100%;
   flex: 1 0 0;
+  display: inline-flex;
+  align-items: center;
 }
 
-.title h1 {
+.title > div {
+  display: inline-block;
+}
+
+.title > h1 {
   margin-left: 16px;
+  display: inline;
 }
 
 .toggle {
@@ -31,8 +38,8 @@
 
 @media only screen and (min-width: 37.5em) {
   .header {
-    padding: 40px 64px;
-    height: 136px;
+    margin-bottom: 40px;
+    height: 3.5rem;
   }
 
   .toggle img {
@@ -47,7 +54,6 @@
 
 @media only screen and (min-width: 70em) {
   .header {
-    padding: 83px 140px 83px 143px;
-    height: 222px;
+    margin-bottom: 83px;
   }
 }

@@ -1,15 +1,16 @@
 // import PropTypes from 'prop-types';
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import LightSunIcon from "/assets/images/icon-sun-light.svg";
 import DarkSunIcon from "/assets/images/icon-sun-dark.svg";
 import LightMoonIcon from "/assets/images/icon-moon-light.svg";
 import DarkMoonIcon from "/assets/images/icon-moon-dark.svg";
-import Icon from "../Icon";
+import IconTitle from "./components/IconTitle";
 import ThemeSwitch from "../ThemeSwitch";
+
 import styles from "./header.module.css";
 
-function Header({ title, iconConfig }) {
+function Header() {
   const [theme, setTheme] = useState("");
 
   const toggleTheme = () => {
@@ -35,12 +36,7 @@ function Header({ title, iconConfig }) {
   return (
     <>
       <header className={styles.header}>
-        {title && (
-          <div className={styles.title}>
-            {iconConfig && <Icon {...iconConfig} />}
-            <h1 className="heading-S">{title}</h1>
-          </div>
-        )}
+        <IconTitle />
 
         <div className={styles.toggle}>
           <img
