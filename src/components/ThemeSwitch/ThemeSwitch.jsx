@@ -1,4 +1,3 @@
-import React from "react";
 import Switch from "react-switch";
 import { useMediaQuery } from "react-responsive";
 import styles from "./themeSwitch.module.css";

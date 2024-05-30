@@ -1,6 +1,6 @@
 // import PropTypes from 'prop-types';
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import LightSunIcon from "/assets/images/icon-sun-light.svg";
 import DarkSunIcon from "/assets/images/icon-sun-dark.svg";
 import LightMoonIcon from "/assets/images/icon-moon-light.svg";

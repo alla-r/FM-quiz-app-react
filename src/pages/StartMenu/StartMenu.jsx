@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ItemRow from "../../components/ItemRow";
 import data from "../../../data/data.json";
@@ -16,7 +16,7 @@ function StartMenu() {
     resetQuizData();
   }, []);
 
-  const items = startMenuConfig.map(({ id, text, imgSrc, iconBG, iconConfig }) => {
+  const items = startMenuConfig.map(({ id, text, iconConfig }) => {
     const onQuizSelected = (id) => {
       setIconConfig(iconConfig);
       setTitle(text);
