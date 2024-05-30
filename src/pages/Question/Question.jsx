@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ItemRow from "../../components/ItemRow";
 import CustomButton from "../../components/Button";
@@ -19,7 +19,6 @@ import generalStyles from "../../styles/General.module.css";
 
 function Question() {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isErrorVisible, setIsErrorVisible] = useState(null);
   const { quizInfo, setQuizInfo } = useQuizContext();
   const { answers } = quizInfo;
@@ -30,35 +29,10 @@ function Question() {
   const questionDetails = getQuestionDetailsProps(data, params.quiz, params.id);
 
   const { options, currentQuestion, question, answer, amountOfQuestions } = questionDetails;
-
-  useEffect(() => {
-    if (isSubmitted) {
-      setQuizInfo((currentQuizInfo) => {
-        // TODO refactor => move data logic out of component
-        let newAnswers = [];
-        const answerConfig = {
-          isCorrect: selectedOption === answer,
-          userAnswer: selectedOption,
-          correctAnswer: answer,
-        };
-
-        if (!currentQuizInfo.answers[index]) {
-          newAnswers = [...currentQuizInfo.answers.slice(0, index), answerConfig];
-        } else {
-          newAnswers = currentQuizInfo.answers.map((el, i) => (i === index ? answerConfig : el));
-        }
-
-        return {
-          ...currentQuizInfo,
-          questionAmount: amountOfQuestions,
-          answers: newAnswers,
-        };
-      });
-    }
-  }, [isSubmitted]);
-
   const questionNumber = Number(params.id);
   const index = params.id - 1;
+
+  let isSubmitted = !!(answers[index] && answers[index].userAnswer);
 
   const getStatus = (contextInfo, option) => {
     if (!contextInfo && selectedOption === option) {
@@ -110,7 +84,7 @@ function Question() {
       <ItemRow
         key={option}
         content={option}
-        onRowClick={() => onOptionSelected(option)}
+        onRowClick={!isSubmitted ? () => onOptionSelected(option) : () => {}}
         additionalIconConfig={additionalIconConfig}
         iconConfig={iconConfig}
         status={status}
@@ -124,15 +98,41 @@ function Question() {
       return;
     }
 
+    isSubmitted = !isSubmitted;
+    if (isSubmitted) {
+      setQuizInfo((currentQuizInfo) => {
+        // TODO refactor => move data logic out of component
+        let newAnswers = [];
+        const answerConfig = {
+          isCorrect: selectedOption === answer,
+          userAnswer: selectedOption,
+          correctAnswer: answer,
+        };
+
+        if (!currentQuizInfo.answers[index]) {
+          newAnswers = [...currentQuizInfo.answers.slice(0, index), answerConfig];
+        } else {
+          newAnswers = currentQuizInfo.answers.map((el, i) => (i === index ? answerConfig : el));
+        }
+
+        return {
+          ...currentQuizInfo,
+          questionAmount: amountOfQuestions,
+          answers: newAnswers,
+        };
+      });
+    }
+  };
+
+  const getNextQuestion = () => {
     if (questionNumber === amountOfQuestions && isSubmitted) {
       navigate(`/question/${params.quiz}/result`);
     }
 
     if (questionNumber !== amountOfQuestions && isSubmitted) {
+      setSelectedOption(null);
       navigate(`/question/${params.quiz}/${questionNumber + 1}`);
     }
-
-    setIsSubmitted((curr) => !curr);
   };
 
   return (
@@ -147,7 +147,7 @@ function Question() {
             <div>
               <ul>{items}</ul>
               <CustomButton
-                onButtonClick={onSubmitAnswer}
+                onButtonClick={isSubmitted ? getNextQuestion : onSubmitAnswer}
                 text={
                   !isSubmitted
                     ? BUTTON_SUBMIT_ANSWER

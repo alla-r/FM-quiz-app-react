@@ -1,11 +1,14 @@
-import React from "react";
 import Icon from "../Icon";
 
 import styles from "./itemRow.module.css";
 
 function ItemRow({ iconConfig, additionalIconConfig, onRowClick, content, status }) {
+  const statusActiveBorder = ["active", "error"];
+
+  const borderClass = `${status && statusActiveBorder.find((el) => el === status) ? status + "-" : ""}border`;
+
   return (
-    <li className={`${styles.item} ${status}-border`} onClick={onRowClick}>
+    <li className={`${styles.item} ${borderClass}`} onClick={onRowClick}>
       <Icon {...iconConfig} />
 
       <h3 className="heading-S">{content}</h3>

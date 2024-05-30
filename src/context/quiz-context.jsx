@@ -34,7 +34,7 @@ export function QuizContextWrapper({ children }) {
     };
 
     localStorage.setItem("contextData", JSON.stringify(contextDataToStorage));
-  }, [title, quizInfo]);
+  }, [iconConfig, title, quizInfo]);
 
   const resetQuizData = () => {
     setIconConfig(INITIAL_STATE.iconConfig);
