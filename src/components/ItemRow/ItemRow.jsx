@@ -3,7 +3,7 @@ import Icon from "../Icon";
 import styles from "./itemRow.module.css";
 
 function ItemRow({ iconConfig, additionalIconConfig, onRowClick, content, status }) {
-  const statusActiveBorder = ["active", "error"];
+  const statusActiveBorder = ["success", "error"];
 
   const borderClass = `${status && statusActiveBorder.find((el) => el === status) ? status + "-" : ""}border`;
 

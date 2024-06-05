@@ -5,17 +5,20 @@ import Result from "../Result";
 import Layout from "../Layout";
 import { QuizContextWrapper } from "../../context/quiz-context";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      { index: true, element: <StartMenu /> },
-      { path: "question/:quiz/:id", element: <Question /> },
-      { path: "question/:quiz/result", element: <Result /> },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        { index: true, element: <StartMenu /> },
+        { path: "question/:quiz/:id", element: <Question /> },
+        { path: "question/:quiz/result", element: <Result /> },
+      ],
+    },
+  ],
+  { basename: "/FM-quiz-app-react" },
+);
 
 function InitComponent() {
   return (
