@@ -13,7 +13,7 @@ import {
   STATUS,
 } from "../../constants";
 import data from "../../../data/data.json";
-import { getQuestionDetailsProps } from "../../helpers/dataFormatters";
+import { getQuestionDetailsProps, getStatus } from "../../helpers/dataFormatters";
 import { useQuizContext } from "../../context/quiz-context";
 
 import generalStyles from "../../styles/General.module.css";
@@ -35,27 +35,9 @@ function Question() {
 
   let isSubmitted = !!(answers[index] && answers[index].userAnswer);
 
-  const getStatus = (contextInfo, option) => {
-    if (!contextInfo && selectedOption === option) {
-      return selectedOption ? STATUS.selected : "";
-    }
-
-    if (contextInfo && contextInfo.isCorrect && contextInfo.userAnswer === option) {
-      return STATUS.success;
-    }
-
-    if (contextInfo && contextInfo.isCorrect === false && contextInfo.userAnswer === option) {
-      return STATUS.error;
-    }
-
-    if (contextInfo && contextInfo.isCorrect === false && contextInfo.correctAnswer === option) {
-      return STATUS.correctTick;
-    }
-  };
-
   const items = options.map((option, i) => {
     const optionCharacter = OPTION_LETTERS[i];
-    const status = getStatus(answers[index], option);
+    const status = getStatus(answers[index], option, selectedOption);
 
     const iconConfig = {
       color: "grey",
@@ -102,7 +84,6 @@ function Question() {
     isSubmitted = !isSubmitted;
     if (isSubmitted) {
       setQuizInfo((currentQuizInfo) => {
-        // TODO refactor => move data logic out of component
         let newAnswers = [];
         const answerConfig = {
           isCorrect: selectedOption === answer,

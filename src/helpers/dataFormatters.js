@@ -1,3 +1,5 @@
+import { STATUS } from "../constants";
+
 const getIconConfig = (quiz, imgSrc) => {
   const colorBG = {
     HTML: "orange",
@@ -57,4 +59,22 @@ const getQuestionDetailsProps = (data, quiz, questionNumber) => {
   return result;
 };
 
-export { getStartMenuProps, getQuestionDetailsProps };
+const getStatus = (contextInfo, option, currentSelectedOption) => {
+  if (!contextInfo && currentSelectedOption === option) {
+    return currentSelectedOption ? STATUS.selected : "";
+  }
+
+  if (contextInfo && contextInfo.isCorrect && contextInfo.userAnswer === option) {
+    return STATUS.success;
+  }
+
+  if (contextInfo && contextInfo.isCorrect === false && contextInfo.userAnswer === option) {
+    return STATUS.error;
+  }
+
+  if (contextInfo && contextInfo.isCorrect === false && contextInfo.correctAnswer === option) {
+    return STATUS.correctTick;
+  }
+};
+
+export { getStartMenuProps, getQuestionDetailsProps, getStatus };
