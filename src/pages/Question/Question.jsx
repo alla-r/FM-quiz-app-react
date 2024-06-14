@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ItemRow from "../../components/ItemRow";
 import CustomButton from "../../components/Button";
 import ErrorMessage from "../../components/ErrorMessage";
+import ProgressBar from "../../components/ProgressBar";
 import {
   OPTION_LETTERS,
   ADDITIONAL_ICON_SRC,
@@ -135,6 +136,8 @@ function Question() {
     }
   };
 
+  const percentValue = (Number(currentQuestion) * 100) / Number(amountOfQuestions);
+
   return (
     <>
       <div className={generalStyles.background}>
@@ -143,6 +146,7 @@ function Question() {
             <div className={generalStyles.column}>
               <p className="body-S">{`Question ${currentQuestion} of ${amountOfQuestions}`}</p>
               <h1 className="heading-M">{question}</h1>
+              <ProgressBar value={percentValue} />
             </div>
             <div>
               <ul>{items}</ul>
