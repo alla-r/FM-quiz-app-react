@@ -9,29 +9,10 @@ import IconTitle from "./components/IconTitle";
 import ThemeSwitch from "../ThemeSwitch";
 
 import styles from "./header.module.css";
+import { useQuizContext } from "../../context/quiz-context";
 
 function Header() {
-  const [theme, setTheme] = useState("");
-
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
-  };
-
-  const defaultTheme = () => {
-    const themeLocalStorage = localStorage.getItem("theme");
-    const themeSystem = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-
-    return themeLocalStorage ?? themeSystem;
-  };
-
-  useEffect(() => {
-    if (!theme) return setTheme(defaultTheme());
-
-    document.querySelector(":root").dataset.theme = theme;
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  const { theme, toggleTheme } = useQuizContext();
 
   return (
     <>
