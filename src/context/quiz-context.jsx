@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     questionAmount: 0,
   },
   resetQuizData: () => {},
-  theme: "",
+  theme: "dark",
   toggleTheme: () => {},
 };
 
