@@ -1,6 +1,10 @@
 import styles from "./progress.module.css";
 
-function ProgressBar({ value }) {
+type ProgressBarProps = {
+  value: number;
+};
+
+function ProgressBar({ value }: ProgressBarProps) {
   const inlineStyle = {
     width: `${value}%`,
   };

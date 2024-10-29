@@ -10,13 +10,15 @@ export const QUIZ_COMPLETED = "Quiz completed";
 export const YOU_SCORED = "You scored...";
 export const PLAY_AGAIN = "Play Again";
 
-export const ADDITIONAL_ICON_SRC = {
+type StatusType = "success" | "error" | "correctTick" | "selected";
+export const ADDITIONAL_ICON_SRC: Record<StatusType, string> = {
   success: successIcon,
   error: errorIcon,
   correctTick: successIcon,
+  selected: "",
 };
 
-export const STATUS = {
+export const STATUS: Record<StatusType, StatusType> = {
   selected: "selected",
   error: "error",
   success: "success",

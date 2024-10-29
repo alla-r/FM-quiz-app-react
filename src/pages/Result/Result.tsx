@@ -26,7 +26,9 @@ function Result() {
         <div className={generalStyles["content-wrapper"]}>
           <div className={generalStyles.column}>
             <h1 className={`${styles.header} heading-L`}>{QUIZ_COMPLETED}</h1>
-            <p className={`${styles.subheader} heading-L--bold`}>{YOU_SCORED}</p>
+            <p className={`${styles.subheader} heading-L--bold`}>
+              {YOU_SCORED}
+            </p>
           </div>
           <div>
             <div className={styles["result-wrapper"]}>
@@ -35,9 +37,14 @@ function Result() {
               </div>
 
               <div className={styles.score}>{score}</div>
-              <div className={styles["score-description"]}>out of {questionAmount}</div>
+              <div className={styles["score-description"]}>
+                out of {questionAmount}
+              </div>
             </div>
-            <CustomButton onButtonClick={onPlayAgainHandler} text={PLAY_AGAIN} />
+            <CustomButton
+              onButtonClick={onPlayAgainHandler}
+              text={PLAY_AGAIN}
+            />
           </div>
         </div>
       </div>
