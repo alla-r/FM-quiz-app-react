@@ -2,7 +2,12 @@ import Switch from "react-switch";
 import { useMediaQuery } from "react-responsive";
 import styles from "./themeSwitch.module.css";
 
-function ThemeSwitch({ theme, toggleThemeHandler }) {
+type ThemeSwitchProps = {
+  theme: string;
+  toggleThemeHandler: () => void;
+};
+
+function ThemeSwitch({ theme, toggleThemeHandler }: ThemeSwitchProps) {
   const isTabletOrDesktop = useMediaQuery({ query: "(min-width: 37.5em)" });
 
   return (

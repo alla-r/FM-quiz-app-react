@@ -14,10 +14,10 @@ function StartMenu() {
 
   useEffect(() => {
     resetQuizData();
-  }, []);
+  }, [resetQuizData]);
 
-  const items = startMenuConfig.map(({ id, text, iconConfig }) => {
-    const onQuizSelected = (id) => {
+  const items = startMenuConfig?.map(({ id, text, iconConfig }) => {
+    const onQuizSelected = (id: string) => {
       setIconConfig(iconConfig);
       setTitle(text);
       navigate(`/question/${id}/1`);
@@ -26,7 +26,6 @@ function StartMenu() {
     return (
       <ItemRow
         key={id}
-        id={id}
         content={text}
         onRowClick={() => onQuizSelected(id)}
         iconConfig={iconConfig}

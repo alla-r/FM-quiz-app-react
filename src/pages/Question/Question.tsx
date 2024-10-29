@@ -17,25 +17,26 @@ import { getQuestionDetailsProps, getStatus } from "../../helpers/dataFormatters
 import { useQuizContext } from "../../context/quiz-context";
 
 import generalStyles from "../../styles/General.module.css";
+import { QuizInfo } from "../../types";
 
 function Question() {
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isErrorVisible, setIsErrorVisible] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
   const { quizInfo, setQuizInfo } = useQuizContext();
   const { answers } = quizInfo;
 
   const params = useParams();
   const navigate = useNavigate();
 
-  const questionDetails = getQuestionDetailsProps(data, params.quiz, params.id);
+  const questionDetails = getQuestionDetailsProps(data, params.quiz!, Number(params.id));
 
   const { options, currentQuestion, question, answer, amountOfQuestions } = questionDetails;
-  const questionNumber = Number(params.id);
-  const index = params.id - 1;
+  const questionNumber = Number(params.id)!;
+  const index = questionNumber - 1;
 
   let isSubmitted = !!(answers[index] && answers[index].userAnswer);
 
-  const items = options.map((option, i) => {
+  const items = options.map((option: string, i: number) => {
     const optionCharacter = OPTION_LETTERS[i];
     const status = getStatus(answers[index], option, selectedOption);
 
@@ -46,7 +47,7 @@ function Question() {
       status: status,
     };
 
-    let additionalIconConfig = null;
+    let additionalIconConfig;
 
     if (status === STATUS.error || status === STATUS.success || status === STATUS.correctTick) {
       additionalIconConfig = {
@@ -58,7 +59,7 @@ function Question() {
       };
     }
 
-    const onOptionSelected = (option) => {
+    const onOptionSelected = (option: string) => {
       setIsErrorVisible(false);
       setSelectedOption(option);
     };
@@ -83,7 +84,7 @@ function Question() {
 
     isSubmitted = !isSubmitted;
     if (isSubmitted) {
-      setQuizInfo((currentQuizInfo) => {
+      setQuizInfo((currentQuizInfo: QuizInfo) => {
         let newAnswers = [];
         const answerConfig = {
           isCorrect: selectedOption === answer,
@@ -112,7 +113,7 @@ function Question() {
     }
 
     if (questionNumber !== amountOfQuestions && isSubmitted) {
-      setSelectedOption(null);
+      setSelectedOption("");
       navigate(`/question/${params.quiz}/${questionNumber + 1}`);
     }
   };

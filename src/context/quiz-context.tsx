@@ -1,4 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { IconConfig, QuizInfo } from "../types";
 
 const INITIAL_STATE = {
   title: "",
@@ -14,7 +24,19 @@ const INITIAL_STATE = {
   toggleTheme: () => {},
 };
 
-export const QuizContext = createContext(INITIAL_STATE);
+type QuizContextType = {
+  title: string;
+  setTitle: Dispatch<SetStateAction<string>>;
+  iconConfig: IconConfig;
+  setIconConfig: Dispatch<SetStateAction<IconConfig>>;
+  quizInfo: QuizInfo;
+  setQuizInfo: Dispatch<SetStateAction<QuizInfo>>;
+  resetQuizData: () => void;
+  theme: string;
+  toggleTheme: () => void;
+};
+
+export const QuizContext = createContext<QuizContextType>({} as QuizContextType);
 
 function getInitialState() {
   const contextData = localStorage.getItem("contextData");
@@ -28,7 +50,7 @@ function defaultTheme() {
   return themeLocalStorage ?? themeSystem;
 }
 
-export function QuizContextWrapper({ children }) {
+export function QuizContextWrapper({ children }: { children?: ReactNode }) {
   const initialState = getInitialState();
 
   const [theme, setTheme] = useState("");
@@ -54,15 +76,15 @@ export function QuizContextWrapper({ children }) {
   useEffect(() => {
     if (!theme) return setTheme(defaultTheme());
 
-    document.querySelector(":root").dataset.theme = theme;
+    document.querySelector<HTMLElement>(":root")!.dataset.theme = theme;
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const resetQuizData = () => {
+  const resetQuizData = useCallback(() => {
     setIconConfig(INITIAL_STATE.iconConfig);
     setTitle(INITIAL_STATE.title);
     setQuizInfo(INITIAL_STATE.quizInfo);
-  };
+  }, []);
 
   return (
     <QuizContext.Provider

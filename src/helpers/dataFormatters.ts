@@ -1,7 +1,8 @@
 import { STATUS } from "../constants";
+import { IconConfig, Data, FormattedQuestion, StartMenuItem, Answer } from "../types";
 
-const getIconConfig = (quiz, imgSrc) => {
-  const colorBG = {
+const getIconConfig = (quiz: string, imgSrc: string): IconConfig => {
+  const colorBG: Record<string, string> = {
     HTML: "orange",
     CSS: "green",
     JavaScript: "blue",
@@ -15,10 +16,8 @@ const getIconConfig = (quiz, imgSrc) => {
   };
 };
 
-const getStartMenuProps = (data) => {
-  let result = {
-    notFound: true,
-  };
+const getStartMenuProps = (data: Data): StartMenuItem[] | null => {
+  let result = null;
 
   if (data && data.quizzes && data.quizzes.length > 0) {
     const startMenuConfig = data.quizzes.map(({ title, icon }) => {
@@ -35,31 +34,34 @@ const getStartMenuProps = (data) => {
   return result;
 };
 
-const getQuestionDetailsProps = (data, quiz, questionNumber) => {
-  let result = {
-    notFound: true,
-  };
+const getQuestionDetailsProps = (
+  data: Data,
+  quiz: string,
+  questionNumber: number,
+): FormattedQuestion => {
+  let result;
 
   if (data && data.quizzes && data.quizzes.length > 0) {
     const quizBlock = data.quizzes.find((el) => el.title === quiz);
-    const questions = quizBlock.questions;
-    const questionDetails = questions[questionNumber - 1];
 
-    questionDetails.iconConfig = getIconConfig(quiz, quizBlock.icon);
-    questionDetails.quizName = quiz;
+    if (quizBlock) {
+      const questions = quizBlock.questions;
+      const questionDetails: FormattedQuestion = {
+        ...questions[questionNumber - 1],
+        iconConfig: getIconConfig(quiz, quizBlock.icon),
+        quizName: quiz,
+        currentQuestion: questionNumber,
+        amountOfQuestions: questions.length,
+      };
 
-    if (questionDetails) {
-      questionDetails.currentQuestion = questionNumber;
-      questionDetails.amountOfQuestions = questions.length;
+      result = questionDetails;
     }
-
-    result = questionDetails;
   }
 
-  return result;
+  return result!;
 };
 
-const getStatus = (contextInfo, option, currentSelectedOption) => {
+const getStatus = (contextInfo: Answer, option: string, currentSelectedOption: string) => {
   if (!contextInfo && currentSelectedOption === option) {
     return currentSelectedOption ? STATUS.selected : "";
   }
